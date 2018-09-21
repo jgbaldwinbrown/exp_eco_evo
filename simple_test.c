@@ -1,4 +1,4 @@
-#include <simulator.h>
+#include "simulator.h"
 #include <ctype.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -9,15 +9,20 @@ int main (int argc, char **argv){
     char *n_txt;
     char *m_txt;
     char *s_txt;
+    char *p_txt;
+    char *g_txt;
+    char *e_txt;
     long long n = 10;
-    long double m = 10;
-    long double s = 1;
-    long double g = 5;
+    double m = 10.0;
+    double s = 1.0;
+    double p = 0.0;
+    long long g = 5;
+    unsigned long int e = 0;
 
     int c;
     opterr = 0;
 
-    full_exp exp;
+    full_exp *exp;
 
     /* parse all arguments */
     while ((c = getopt (argc, argv, "abc:")) != -1)
@@ -25,22 +30,30 @@ int main (int argc, char **argv){
             {
             case 'n':
                 n_txt = optarg;
-                n = sscanf(n_txt, "%Ld");
+                sscanf(n_txt, "%lld", &n);
                 break;
             case 'm':
                 m_txt = optarg;
-                m = sscanf(m_txt, "%Lf");
+                sscanf(m_txt, "%lf", &m);
                 break;
             case 's':
                 s_txt = optarg;
-                s = sscanf(s_txt, "%Lf");
+                sscanf(s_txt, "%lf", &s);
+                break;
+            case 'p':
+                s_txt = optarg;
+                sscanf(p_txt, "%lf", &p);
                 break;
             case 'g':
                 g_txt = optarg;
-                g = sscanf(g_txt, "%Ld");
+                sscanf(g_txt, "%lld", &g);
+                break;
+            case 'e':
+                g_txt = optarg;
+                sscanf(e_txt, "%lu", &e);
                 break;
             case '?':
-                if (optopt == 'n' || optopt == 'm' || optopt == 's' || optopt == 'g')
+                if (optopt == 'n' || optopt == 'm' || optopt == 's' || optopt == 'g' || optopt == 'p' || optopt == 'e')
                     fprintf (stderr, "Option -%c requires an argument.\n", optopt);
                 else if (isprint (optopt))
                     fprintf (stderr, "Unknown option `-%c'.\n", optopt);
@@ -52,15 +65,23 @@ int main (int argc, char **argv){
             default:
                 abort ();
             }
+
+    /*initialize random number generator*/
+    gsl_rng * myrng = gsl_rng_alloc (gsl_rng_taus);
+    gsl_rng_set (myrng, e);
     
     /*set up pop to evolve*/
-    exp = init_full_exp(n, g, m, s);
+    exp = init_full_exp(n, g);
+    rinit_full_exp(exp, m, s, p, myrng);
 
     /*do the experimental evolution*/
-    
+    /*evo_all_gens(exp);*/
 
     /*free the main data structure*/
-    free_full_exp(exp);
+    free_exp(exp);
+
+    /*free gsl random number seed:*/
+    gsl_rng_free(myrng);
 
     /*
     for (index = optind; index < argc; index++)
