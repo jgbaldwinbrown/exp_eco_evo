@@ -25,7 +25,7 @@ int main (int argc, char **argv){
     full_exp *exp;
 
     /* parse all arguments */
-    while ((c = getopt (argc, argv, "abc:")) != -1)
+    while ((c = getopt (argc, argv, "nmspge:")) != -1)
         switch (c)
             {
             case 'n':
@@ -49,18 +49,19 @@ int main (int argc, char **argv){
                 sscanf(g_txt, "%lld", &g);
                 break;
             case 'e':
-                g_txt = optarg;
+                e_txt = optarg;
                 sscanf(e_txt, "%lu", &e);
                 break;
             case '?':
-                if (optopt == 'n' || optopt == 'm' || optopt == 's' || optopt == 'g' || optopt == 'p' || optopt == 'e')
+                if (optopt == 'n' || optopt == 'm' || optopt == 's' || optopt == 'g' || optopt == 'p' || optopt == 'e'){
                     fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-                else if (isprint (optopt))
+                }
+                else if (isprint (optopt)){
                     fprintf (stderr, "Unknown option `-%c'.\n", optopt);
-                else
-                    fprintf (stderr,
+                } else {fprintf (stderr,
                              "Unknown option character `\\x%x'.\n",
                              optopt);
+                }
                 return 1;
             default:
                 abort ();
