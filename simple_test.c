@@ -55,8 +55,7 @@ int main (int argc, char **argv){
             case '?':
                 if (optopt == 'n' || optopt == 'm' || optopt == 's' || optopt == 'g' || optopt == 'p' || optopt == 'e'){
                     fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-                }
-                else if (isprint (optopt)){
+                } else if (isprint (optopt)){
                     fprintf (stderr, "Unknown option `-%c'.\n", optopt);
                 } else {fprintf (stderr,
                              "Unknown option character `\\x%x'.\n",
