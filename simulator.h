@@ -174,3 +174,31 @@ void reproduce_generation(generation *parent_gen, generation *child_gen, double 
     free(child_placeholder);
 }
 
+void all_herb_eat(generation *mygen, double food){
+    long long i;
+    long long herbnum = 0;
+    double foodperherb;
+    indiv *myherb;
+    for (i=0; i < mygen->pop_size; i++){
+        myherb = mygen->population + i;
+        if (myherb->alive && !(myherb->carnivore)){
+            herbnum++;
+        }
+    }
+    foodperherb = ((double)food) / ((double)herbnum);
+    for (i=0; i < mygen->pop_size; i++){
+        myherb = mygen->population + i;
+        if (myherb->alive && !(myherb->carnivore)){
+            myherb->food_eaten += foodperherb;
+        }
+    }
+}
+
+void all_starve(generation *mygen){
+    long long i;
+    for (i=0; i < mygen->pop_size; i++){
+        if(mygen->population[i].food_eaten < mygen->population[i].food_needed){
+            mygen->population[i].alive = false;
+        }
+    }
+}
