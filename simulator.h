@@ -99,6 +99,7 @@ void reproduce_indiv(indiv *parent, indiv *child, double repro_stdev, double car
     child->food_eaten = 0.0;
     child->size = gsl_ran_gaussian(myrng, repro_stdev) + parent->size;
     child->food_needed = child->size;
+    child->alive = parent->alive;
     if (carn_rand > carn_trans_prob){
         child->carnivore = parent->carnivore;
     } else {
