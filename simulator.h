@@ -115,9 +115,7 @@ void getshuf(long long *placeholder, long long new_length, const gsl_rng *myrng)
     long long i;
     for (i=0; i < new_length; i++){
         placeholder[i] = i;
-        printf(" %lld",placeholder[i]);
     }
-        printf("\n");
     gsl_ran_shuffle(myrng, placeholder, new_length, sizeof(long long));
 }
 
