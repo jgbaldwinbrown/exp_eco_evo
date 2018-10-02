@@ -116,10 +116,13 @@ void getshuf(long long *placeholder, long long placeholder_length, long long new
     if (placeholder_length < new_length){
         placeholder = realloc(placeholder, sizeof(long long) * new_length);
     }
-    for (i=0; i<new_length; i++){
+    for (i=0; i < new_length; i++){
         placeholder[i] = i;
+        printf(" %lld",placeholder[i]);
     }
+        printf("\n");
     gsl_ran_shuffle(myrng, placeholder, new_length, sizeof(long long));
+    /*gsl_ran_shuffle(myrng, placeholder, sizeof(long long), new_length);*/
 }
 
 void carn_search_and_eat(generation *mygen, long long carn_index, const gsl_rng *myrng){
