@@ -111,18 +111,14 @@ void carn_eat(indiv *predator, indiv *prey){
     predator->food_eaten += prey->size;
 }
 
-void getshuf(long long *placeholder, long long placeholder_length, long long new_length, const gsl_rng *myrng){
+void getshuf(long long *placeholder, long long new_length, const gsl_rng *myrng){
     long long i;
-    if (placeholder_length < new_length){
-        placeholder = realloc(placeholder, sizeof(long long) * new_length);
-    }
     for (i=0; i < new_length; i++){
         placeholder[i] = i;
         printf(" %lld",placeholder[i]);
     }
         printf("\n");
     gsl_ran_shuffle(myrng, placeholder, new_length, sizeof(long long));
-    /*gsl_ran_shuffle(myrng, placeholder, sizeof(long long), new_length);*/
 }
 
 void carn_search_and_eat(generation *mygen, long long carn_index, const gsl_rng *myrng){
@@ -130,7 +126,7 @@ void carn_search_and_eat(generation *mygen, long long carn_index, const gsl_rng 
     indiv *mycarn = (mygen->population) + carn_index;
     indiv *myprey;
     long long *placeholder = (long long *)malloc(sizeof(long long) * mygen->pop_size);
-    getshuf(placeholder, mygen->pop_size, mygen->pop_size, myrng);
+    getshuf(placeholder, mygen->pop_size, myrng);
     for (i=0; i<mygen->pop_size; i++){
         if (mycarn->food_eaten > mycarn->food_needed){
             break;
@@ -147,7 +143,7 @@ void all_carn_search_and_eat(generation *mygen, const gsl_rng *myrng){
     long long i;
     indiv *mycarn;
     long long *placeholder = (long long *)malloc(sizeof(long long) * mygen->pop_size);
-    getshuf(placeholder, mygen->pop_size, mygen->pop_size, myrng);
+    getshuf(placeholder, mygen->pop_size, myrng);
     for (i=0; i < mygen->pop_size; i++){
         mycarn = mygen->population + placeholder[i];
         if (mycarn->alive && mycarn->carnivore){
