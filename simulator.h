@@ -56,21 +56,27 @@ generation *init_generation(long long pop_size){
     
 void prgen(generation *a){
     long long i;
+    printf("carnivore:\n");
     for (i=0; i < a->pop_size; i++){
         printf(" %d", a->population[i].carnivore);
     }
     printf("\n");
+    printf("size:\n");
     for (i=0; i < a->pop_size; i++){
         printf(" %lf", a->population[i].size);
     }
     printf("\n");
+    printf("food_needed:\n");
     for (i=0; i < a->pop_size; i++){
         printf(" %lf", a->population[i].food_needed);
     }
+    printf("\n");
+    printf("alive:\n");
     for (i=0; i < a->pop_size; i++){
         printf(" %d", a->population[i].alive);
     }
     printf("\n");
+    printf("food_eaten:\n");
     for (i=0; i < a->pop_size; i++){
         printf(" %lf", a->population[i].food_eaten);
     }
