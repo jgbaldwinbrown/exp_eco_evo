@@ -20,7 +20,7 @@ int main(){
     prgen(b);
     printf("\n");
 
-    run_gen(a, b, .1, .1, myrng, food);
+    run_gen(a, b, .1, .1, myrng, food, 5);
 
     prgen(a);
     printf("\n");

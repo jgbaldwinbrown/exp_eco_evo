@@ -21,7 +21,7 @@ int main(){
     }
 
     printf("\n");
-    carn_search_and_eat(a, 5, myrng);
+    carn_search_and_eat(a, 5, 5, myrng);
 
     for (i=0; i < a->pop_size; i++){
         printf(" %d", a->population[i].alive);

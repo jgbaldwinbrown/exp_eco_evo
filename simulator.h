@@ -53,9 +53,43 @@ generation *init_generation(long long pop_size){
     my_generation->population = malloc(sizeof(indiv) * pop_size);
     return(my_generation);
 }
+
+void pr_carn_prop_full(generation *a){
+    long long i;
+    long long carncount = 0;
+    double prop;
+    for (i=0; i < a->pop_size; i++){
+        if (a->population[i].carnivore){
+            carncount++;
+        }
+    }
+    prop = (double)carncount / (double)(a->pop_size);
+    printf("carnivore_proportion: %lf\n", prop);
+}
+    
+void pr_carn_prop_alive(generation *a){
+    long long i;
+    long long carncount = 0;
+    long long alivecount = 0;
+    double prop;
+    for (i=0; i < a->pop_size; i++){
+        if (a->population[i].carnivore && a->population[i].alive){
+            carncount++;
+        }
+        if (a->population[i].alive){
+            alivecount++;
+        }
+    }
+    prop = (double)carncount / (double)(alivecount);
+    printf("carnivore_proportion_alive: %lf\n", prop);
+}
     
 void prgen(generation *a){
     long long i;
+    
+    pr_carn_prop_full(a);
+    pr_carn_prop_alive(a);
+    
     printf("carnivore:\n");
     for (i=0; i < a->pop_size; i++){
         printf(" %d", a->population[i].carnivore);
@@ -149,14 +183,14 @@ void getshuf(long long *placeholder, long long new_length, const gsl_rng *myrng)
     gsl_ran_shuffle(myrng, placeholder, new_length, sizeof(long long));
 }
 
-void carn_search_and_eat(generation *mygen, long long carn_index, const gsl_rng *myrng){
+void carn_search_and_eat(generation *mygen, long long carn_index, long long search_tries, const gsl_rng *myrng){
     long long i;
     indiv *mycarn = (mygen->population) + carn_index;
     indiv *myprey;
     long long *placeholder = (long long *)malloc(sizeof(long long) * mygen->pop_size);
     getshuf(placeholder, mygen->pop_size, myrng);
     for (i=0; i<mygen->pop_size; i++){
-        if (mycarn->food_eaten > mycarn->food_needed){
+        if (mycarn->food_eaten > mycarn->food_needed || i >= 5){
             break;
         }
         myprey = mygen->population + placeholder[i];
@@ -167,7 +201,7 @@ void carn_search_and_eat(generation *mygen, long long carn_index, const gsl_rng 
     free(placeholder);
 }
 
-void all_carn_search_and_eat(generation *mygen, const gsl_rng *myrng){
+void all_carn_search_and_eat(generation *mygen, long long search_tries, const gsl_rng *myrng){
     long long i;
     indiv *mycarn;
     long long *placeholder = (long long *)malloc(sizeof(long long) * mygen->pop_size);
@@ -175,7 +209,7 @@ void all_carn_search_and_eat(generation *mygen, const gsl_rng *myrng){
     for (i=0; i < mygen->pop_size; i++){
         mycarn = mygen->population + placeholder[i];
         if (mycarn->alive && mycarn->carnivore){
-            carn_search_and_eat(mygen, i, myrng);
+            carn_search_and_eat(mygen, i, search_tries, myrng);
         }
     }
     free(placeholder);
@@ -232,14 +266,14 @@ void all_starve(generation *mygen){
     }
 }
 
-void run_gen(generation *parent_gen, generation *child_gen, double repro_stdev, double carn_trans_prob, const gsl_rng *myrng, double food){
+void run_gen(generation *parent_gen, generation *child_gen, double repro_stdev, double carn_trans_prob, const gsl_rng *myrng, double food, long long search_tries){
     /*carnivores eat,
     living herbivores eat,
     all starving occurs,
     all reprod occurs*/
     
     /* carnivores eat */
-    all_carn_search_and_eat(parent_gen, myrng);
+    all_carn_search_and_eat(parent_gen, search_tries, myrng);
 
     /* living herbivores eat */
     all_herb_eat(parent_gen, food);
@@ -252,10 +286,10 @@ void run_gen(generation *parent_gen, generation *child_gen, double repro_stdev, 
 }
 
 
-void run_full_exp(full_exp *myexp, double repro_stdev, double carn_trans_prob, const gsl_rng *myrng, double food){
+void run_full_exp(full_exp *myexp, double repro_stdev, double carn_trans_prob, const gsl_rng *myrng, double food, long long search_tries){
     long long i;
     for (i=0; i< (myexp->generation_number - 1); i++){
-        run_gen(myexp->exp_gens[i], myexp->exp_gens[i+1], repro_stdev, carn_trans_prob, myrng, food);
+        run_gen(myexp->exp_gens[i], myexp->exp_gens[i+1], repro_stdev, carn_trans_prob, myrng, food, search_tries);
     }
 }
 
