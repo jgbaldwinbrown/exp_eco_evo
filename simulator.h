@@ -54,6 +54,29 @@ generation *init_generation(long long pop_size){
     return(my_generation);
 }
     
+void prgen(generation *a){
+    long long i;
+    for (i=0; i < a->pop_size; i++){
+        printf(" %d", a->population[i].carnivore);
+    }
+    printf("\n");
+    for (i=0; i < a->pop_size; i++){
+        printf(" %lf", a->population[i].size);
+    }
+    printf("\n");
+    for (i=0; i < a->pop_size; i++){
+        printf(" %lf", a->population[i].food_needed);
+    }
+    for (i=0; i < a->pop_size; i++){
+        printf(" %d", a->population[i].alive);
+    }
+    printf("\n");
+    for (i=0; i < a->pop_size; i++){
+        printf(" %lf", a->population[i].food_eaten);
+    }
+    printf("\n");
+}
+
 void rinit_generation(generation *my_generation, double mean, double stdev, double carnivore_prob, gsl_rng *myrng){
     long long i;
     for (i=0; i<my_generation->pop_size; i++){
@@ -158,13 +181,13 @@ void reproduce_generation(generation *parent_gen, generation *child_gen, double 
     long long *child_placeholder = (long long *)malloc(sizeof(long long) * child_gen->pop_size);
     long long i;
     
-    for (i=0; i<parent_gen->pop_size; i++){
+    for (i=0; i < parent_gen->pop_size; i++){
         if (parent_gen->population[i].alive){
             placeholder[alive_num] = i;
             alive_num++;
         }
     }
-    gsl_ran_choose(myrng, placeholder, alive_num, child_placeholder, child_gen->pop_size, sizeof(long long));
+    gsl_ran_sample(myrng, child_placeholder, child_gen->pop_size, placeholder, alive_num, sizeof(long long));
     
     for (i=0; i<child_gen->pop_size; i++){
         reproduce_indiv(parent_gen->population + child_placeholder[i], child_gen->population + i, repro_stdev, carn_trans_prob, myrng);
@@ -202,3 +225,31 @@ void all_starve(generation *mygen){
         }
     }
 }
+
+void run_gen(generation *parent_gen, generation *child_gen, double repro_stdev, double carn_trans_prob, const gsl_rng *myrng, double food){
+    /*carnivores eat,
+    living herbivores eat,
+    all starving occurs,
+    all reprod occurs*/
+    
+    /* carnivores eat */
+    all_carn_search_and_eat(parent_gen, myrng);
+
+    /* living herbivores eat */
+    all_herb_eat(parent_gen, food);
+    
+    /* all starving occurs */
+    all_starve(parent_gen);
+
+    /* all reprod occurs */
+    reproduce_generation(parent_gen, child_gen, repro_stdev, carn_trans_prob, myrng);
+}
+
+
+void run_full_exp(full_exp *myexp, double repro_stdev, double carn_trans_prob, const gsl_rng *myrng, double food){
+    long long i;
+    for (i=0; i< (myexp->generation_number - 1); i++){
+        run_gen(myexp->exp_gens[i], myexp->exp_gens[i+1], repro_stdev, carn_trans_prob, myrng, food);
+    }
+}
+

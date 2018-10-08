@@ -8,6 +8,7 @@
 int main(){
     generation *a;
     generation *b;
+    double food = 80;
     gsl_rng * myrng = gsl_rng_alloc (gsl_rng_taus);
     a = init_generation(20);
     b = init_generation(20);
@@ -15,11 +16,16 @@ int main(){
     a->population[5].carnivore = true;
 
     prgen(a);
-
     printf("\n");
-    reproduce_generation(a, b, .1, .1, myrng);
-
     prgen(b);
+    printf("\n");
+
+    run_gen(a, b, .1, .1, myrng, food);
+
+    prgen(a);
+    printf("\n");
+    prgen(b);
+    printf("\n");
 
     gsl_rng_free(myrng);
     free_generation(a);
