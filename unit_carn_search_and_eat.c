@@ -6,30 +6,17 @@
 
 int main(){
     generation *a;
-    long long i;
     gsl_rng * myrng = gsl_rng_alloc (gsl_rng_taus);
     a = init_generation(20);
     rinit_generation(a, 5, 1, .5, myrng);
     a->population[5].carnivore = true;
 
-    for (i=0; i < a->pop_size; i++){
-        printf(" %d", a->population[i].alive);
-    }
-    printf("\n");
-    for (i=0; i < a->pop_size; i++){
-        printf(" %lf", a->population[i].food_eaten);
-    }
+    prgen(a);
 
     printf("\n");
     carn_search_and_eat(a, 5, 5, myrng);
 
-    for (i=0; i < a->pop_size; i++){
-        printf(" %d", a->population[i].alive);
-    }
-    printf("\n");
-    for (i=0; i < a->pop_size; i++){
-        printf(" %lf", a->population[i].food_eaten);
-    }
+    prgen(a);
 
     gsl_rng_free(myrng);
     printf("%lld\n", a->pop_size);

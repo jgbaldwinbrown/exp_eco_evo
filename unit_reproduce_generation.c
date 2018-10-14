@@ -13,6 +13,8 @@ int main(){
     b = init_generation(20);
     rinit_generation(a, 5, 1, .1, myrng);
     a->population[5].carnivore = true;
+    a->population[6].alive = false;
+    a->population[17].alive = false;
 
     prgen(a);
 
