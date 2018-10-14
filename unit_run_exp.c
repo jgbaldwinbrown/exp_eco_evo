@@ -16,7 +16,7 @@ int main(){
     prgen(a->exp_gens[0]);
     printf("\n");
 
-    run_full_exp(a, .1, .1, myrng, food, 5);
+    run_full_exp(a, .1, .1, myrng, food, 5, 1.1);
     
     for(i=0; i < a->generation_number; i++){
         prgen(a->exp_gens[i]);

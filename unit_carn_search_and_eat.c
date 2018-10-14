@@ -14,7 +14,7 @@ int main(){
     prgen(a);
 
     printf("\n");
-    carn_search_and_eat(a, 5, 0, myrng);
+    carn_search_and_eat(a, 5, 0, myrng, 1.1);
 
     prgen(a);
 

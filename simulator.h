@@ -188,10 +188,12 @@ void getshuf(long long *placeholder, long long new_length, const gsl_rng *myrng)
     for (i=0; i < new_length; i++){
         placeholder[i] = i;
     }
-    gsl_ran_shuffle(myrng, placeholder, new_length, sizeof(long long));
+    if (new_length > 0){
+        gsl_ran_shuffle(myrng, placeholder, new_length, sizeof(long long));
+    }
 }
 
-void carn_search_and_eat(generation *mygen, long long carn_index, long long search_tries, const gsl_rng *myrng){
+void carn_search_and_eat(generation *mygen, long long carn_index, long long search_tries, const gsl_rng *myrng, double carn_size_prop){
     long long i;
     indiv *mycarn = (mygen->population) + carn_index;
     indiv *myprey;
@@ -202,14 +204,14 @@ void carn_search_and_eat(generation *mygen, long long carn_index, long long sear
             break;
         }
         myprey = mygen->population + placeholder[i];
-        if (myprey->alive && placeholder[i] != carn_index){
+        if (myprey->alive && placeholder[i] != carn_index && mycarn->size > (myprey->size * carn_size_prop)){
             carn_eat(mycarn, myprey);
         }
     }
     free(placeholder);
 }
 
-void all_carn_search_and_eat(generation *mygen, long long search_tries, const gsl_rng *myrng){
+void all_carn_search_and_eat(generation *mygen, long long search_tries, const gsl_rng *myrng, double carn_size_prop){
     long long i;
     indiv *mycarn;
     long long *placeholder = (long long *)malloc(sizeof(long long) * mygen->pop_size);
@@ -217,7 +219,7 @@ void all_carn_search_and_eat(generation *mygen, long long search_tries, const gs
     for (i=0; i < mygen->pop_size; i++){
         mycarn = mygen->population + placeholder[i];
         if (mycarn->alive && mycarn->carnivore){
-            carn_search_and_eat(mygen, i, search_tries, myrng);
+            carn_search_and_eat(mygen, i, search_tries, myrng, carn_size_prop);
         }
     }
     free(placeholder);
@@ -235,7 +237,13 @@ void reproduce_generation(generation *parent_gen, generation *child_gen, double 
             alive_num++;
         }
     }
-    gsl_ran_sample(myrng, child_placeholder, child_gen->pop_size, placeholder, alive_num, sizeof(long long));
+    if (alive_num > 0){
+        gsl_ran_sample(myrng, child_placeholder, child_gen->pop_size, placeholder, alive_num, sizeof(long long));
+    }
+    else {
+        printf("all individuals dead!");
+        exit(1);
+    }
     
     for (i=0; i<child_gen->pop_size; i++){
         reproduce_indiv(parent_gen->population + child_placeholder[i], child_gen->population + i, repro_stdev, carn_trans_prob, myrng);
@@ -274,14 +282,14 @@ void all_starve(generation *mygen){
     }
 }
 
-void run_gen(generation *parent_gen, generation *child_gen, double repro_stdev, double carn_trans_prob, const gsl_rng *myrng, double food, long long search_tries){
+void run_gen(generation *parent_gen, generation *child_gen, double repro_stdev, double carn_trans_prob, const gsl_rng *myrng, double food, long long search_tries, double carn_size_prop){
     /*carnivores eat,
     living herbivores eat,
     all starving occurs,
     all reprod occurs*/
     
     /* carnivores eat */
-    all_carn_search_and_eat(parent_gen, search_tries, myrng);
+    all_carn_search_and_eat(parent_gen, search_tries, myrng, carn_size_prop);
 
     /* living herbivores eat */
     all_herb_eat(parent_gen, food);
@@ -294,10 +302,10 @@ void run_gen(generation *parent_gen, generation *child_gen, double repro_stdev, 
 }
 
 
-void run_full_exp(full_exp *myexp, double repro_stdev, double carn_trans_prob, const gsl_rng *myrng, double food, long long search_tries){
+void run_full_exp(full_exp *myexp, double repro_stdev, double carn_trans_prob, const gsl_rng *myrng, double food, long long search_tries, double carn_size_prop){
     long long i;
     for (i=0; i< (myexp->generation_number - 1); i++){
-        run_gen(myexp->exp_gens[i], myexp->exp_gens[i+1], repro_stdev, carn_trans_prob, myrng, food, search_tries);
+        run_gen(myexp->exp_gens[i], myexp->exp_gens[i+1], repro_stdev, carn_trans_prob, myrng, food, search_tries, carn_size_prop);
     }
 }
 

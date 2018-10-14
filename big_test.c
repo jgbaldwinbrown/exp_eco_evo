@@ -14,7 +14,7 @@ int main(){
 
     printf("\n");
 
-    run_full_exp(a, .1, .1, myrng, food, 1);
+    run_full_exp(a, .1, .1, myrng, food, 1, 1.1);
 
     prexp(a);
     
