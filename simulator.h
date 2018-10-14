@@ -117,6 +117,14 @@ void prgen(generation *a){
     printf("\n");
 }
 
+void prexp(full_exp *a){
+    long long i;
+    for (i=0; i < a->generation_number; i++){
+        printf("Generation: %lld\n", i);
+        prgen(a->exp_gens[i]);
+    }
+}
+
 void rinit_generation(generation *my_generation, double mean, double stdev, double carnivore_prob, gsl_rng *myrng){
     long long i;
     for (i=0; i<my_generation->pop_size; i++){
@@ -190,7 +198,7 @@ void carn_search_and_eat(generation *mygen, long long carn_index, long long sear
     long long *placeholder = (long long *)malloc(sizeof(long long) * mygen->pop_size);
     getshuf(placeholder, mygen->pop_size, myrng);
     for (i=0; i<mygen->pop_size; i++){
-        if (mycarn->food_eaten > mycarn->food_needed || i >= 5){
+        if (mycarn->food_eaten > mycarn->food_needed || (i >= search_tries)){
             break;
         }
         myprey = mygen->population + placeholder[i];
