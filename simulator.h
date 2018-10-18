@@ -66,7 +66,7 @@ void pr_carn_prop_full(generation *a){
     prop = (double)carncount / (double)(a->pop_size);
     printf("carnivore_proportion: %lf\n", prop);
 }
-    
+
 void pr_carn_prop_alive(generation *a){
     long long i;
     long long carncount = 0;
