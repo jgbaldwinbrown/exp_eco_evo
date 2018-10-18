@@ -83,12 +83,68 @@ void pr_carn_prop_alive(generation *a){
     prop = (double)carncount / (double)(alivecount);
     printf("carnivore_proportion_alive: %lf\n", prop);
 }
-    
+
+void pr_avg_sizes(generation *a){
+    long long i;
+    double carnsum = 0.0;
+    long long carncount = 0;
+    double carnavg = 0;
+    double herbsum = 0.0;
+    long long herbcount = 0;
+    double herbavg = 0;
+    for (i=0; i < a->pop_size; i++){
+        if (a->population[i].carnivore){
+            carncount++;
+            carnsum += a->population[i].size;
+        }
+        else {
+            herbcount++;
+            herbsum += a->population[i].size;
+        }
+    }
+    if (carncount > 0) {
+        carnavg = (float)carnsum / (float)carncount;
+    }
+    if (herbcount > 0) {
+        herbavg = (float)herbsum / (float)herbcount;
+    }
+    printf("carnivore_average_size: %lf; herbivore_average_size: %lf\n", carnavg, herbavg);
+}
+
+void pr_avg_sizes_alive(generation *a){
+    long long i;
+    double carnsum = 0.0;
+    long long carncount = 0;
+    double carnavg = 0;
+    double herbsum = 0.0;
+    long long herbcount = 0;
+    double herbavg = 0;
+    for (i=0; i < a->pop_size; i++){
+        if (a->population[i].carnivore && a->population[i].alive){
+            carncount++;
+            carnsum += a->population[i].size;
+        }
+        else if (!(a->population[i].carnivore) && a->population[i].alive){
+            herbcount++;
+            herbsum += a->population[i].size;
+        }
+    }
+    if (carncount > 0) {
+        carnavg = (float)carnsum / (float)carncount;
+    }
+    if (herbcount > 0) {
+        herbavg = (float)herbsum / (float)herbcount;
+    }
+    printf("carnivore_average_size: %lf; herbivore_average_size: %lf\n", carnavg, herbavg);
+}
+
 void prgen(generation *a){
     long long i;
     
     pr_carn_prop_full(a);
     pr_carn_prop_alive(a);
+    pr_avg_sizes(a);
+    pr_avg_sizes_alive(a);
     
     printf("carnivore:\n");
     for (i=0; i < a->pop_size; i++){
