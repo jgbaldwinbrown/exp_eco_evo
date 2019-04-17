@@ -185,27 +185,15 @@ void prgen_table(generation *a, long long gen_number){
     long long i;
     
     for (i=0; i < a->pop_size; i++){
-        /* print generation number */
-        printf("\t%lld", gen_number);
-        
-        /* print individual number */
-        printf("\t%lld", i);
-        
-        /* print carnivore status*/
-        printf("\t%d", a->population[i].carnivore);
-        
-        /* print individual size */
-        printf("\t%lf", a->population[i].size);
-
-        /* print food needed */
-        printf("\t%lf", a->population[i].food_needed);
-
-        /* print if alive */
-        printf("\t%d", a->population[i].alive);
-
-        /* print amount of food eaten */
-        printf("\t%lf", a->population[i].food_eaten);
-        printf("\n");
+        /* print indiv's whole info */
+        printf("%lld\t%lld\t%d\t%lf\t%lf\t%d\t%lf\n",
+            gen_number,
+            i,
+            a->population[i].carnivore,
+            a->population[i].size,
+            a->population[i].food_needed,
+            a->population[i].alive,
+            a->population[i].food_eaten);
     }
 }
 
