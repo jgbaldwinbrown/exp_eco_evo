@@ -155,8 +155,8 @@ int main (int argc, char **argv){
     /*do the experimental evolution*/
     /*evo_all_gens(exp);*/
     gens_survived = run_full_exp(exp, v, t, myrng, f, a, q);
-    printf("Generations survived: %lld\n", gens_survived);
-    prexp(exp);
+    /* printf("Generations survived: %lld\n", gens_survived); */
+    prexp_table(exp);
 
     /*free the main data structure*/
     free_exp(exp);
