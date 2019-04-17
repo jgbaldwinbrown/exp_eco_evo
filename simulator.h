@@ -181,6 +181,40 @@ void prexp(full_exp *a){
     }
 }
 
+void prgen_table(generation *a){
+    long long i;
+    
+    /* print carnivore status*/
+    printf("%d", a->population[0].carnivore);
+    for (i=1; i < a->pop_size; i++){
+        printf("\t%d", a->population[i].carnivore);
+    }
+    /* print individual sizes */
+    for (i=0; i < a->pop_size; i++){
+        printf("\t%lf", a->population[i].size);
+    }
+    /* print food needed */
+    for (i=0; i < a->pop_size; i++){
+        printf("\t%lf", a->population[i].food_needed);
+    }
+    /* print if alive */
+    for (i=0; i < a->pop_size; i++){
+        printf("\t%d", a->population[i].alive);
+    }
+    /* print amount of food eaten */
+    for (i=0; i < a->pop_size; i++){
+        printf("\t%lf", a->population[i].food_eaten);
+    }
+    printf("\n");
+}
+
+void prexp_table(full_exp *a){
+    long long i;
+    for (i=0; i < a->generation_number; i++){
+        prgen_table(a->exp_gens[i]);
+    }
+}
+
 void rinit_generation(generation *my_generation, double mean, double stdev, double carnivore_prob, gsl_rng *myrng){
     long long i;
     for (i=0; i<my_generation->pop_size; i++){
