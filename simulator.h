@@ -181,11 +181,16 @@ void prexp(full_exp *a){
     }
 }
 
-void prgen_table(generation *a){
+void prgen_table(generation *a, long long gen_number){
     long long i;
     
-    printf("%d", a->population[0].carnivore);
-    for (i=1; i < a->pop_size; i++){
+    for (i=0; i < a->pop_size; i++){
+        /* print generation number */
+        printf("\t%lld", gen_number);
+        
+        /* print individual number */
+        printf("\t%lld", i);
+        
         /* print carnivore status*/
         printf("\t%d", a->population[i].carnivore);
         
@@ -200,14 +205,14 @@ void prgen_table(generation *a){
 
         /* print amount of food eaten */
         printf("\t%lf", a->population[i].food_eaten);
+        printf("\n");
     }
-    printf("\n");
 }
 
 void prexp_table(full_exp *a){
     long long i;
     for (i=0; i < a->generation_number; i++){
-        prgen_table(a->exp_gens[i]);
+        prgen_table(a->exp_gens[i], i);
     }
 }
 
