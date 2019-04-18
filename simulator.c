@@ -186,6 +186,11 @@ void prexp_table(full_exp *a){
     }
 }
 
+void prexp_table_end(full_exp *a){
+    long long i = a->generation_number - 1;
+    prgen_table(a->exp_gens[i], i);
+}
+
 void rinit_generation(generation *my_generation, double mean, double stdev, double carnivore_prob, gsl_rng *myrng){
     long long i;
     for (i=0; i<my_generation->pop_size; i++){
