@@ -3,25 +3,7 @@
 #include <stdbool.h>
 #include <gsl/gsl_randist.h>
 #include <gsl/gsl_rng.h>
-
-typedef struct an_indiv {
-    double size;
-    double food_needed;
-    double food_eaten;
-    bool carnivore;
-    bool alive;
-} indiv;
-
-typedef struct a_generation {
-    long long pop_size;
-    indiv *population;
-} generation;
-
-typedef struct full_experiment {
-    long long pop_size;
-    long long generation_number;
-    generation **exp_gens;
-} full_exp;
+#include "simulator.h"
 
 /*--------------------------------------------------------------------------------*/
 /* functions */
