@@ -10,13 +10,13 @@ print "	touch $@"
 names = []
 for n in [1000,10000]:
     for f in [1000, 10000]:
-        for g in [100, 1000]:
+        for g in [50, 200, 500]:
             for s in [.1, 1]:
                 for p in [0, 0.01, 0.1]:
                     for v in [.1, 1]:
-                        for q in [.8, 1, 1.4]:
-                            for a in [0, 1, 2, 4]:
-                                for t in [0, .001, .01, .1]:
+                        for q in [.8, 1, 1.2, 1.4, 1.8]:
+                            for a in [0, 1, 2, 3, 4, 5, 8]:
+                                for t in [0, .0001, .001, .01, .1]:
                                     for i in xrange(50):
                                         name = "datadir/sim_n%d_f%d_g%d_s%f_p%f_v%f_q%f_a%d_t%f_e%f_i%f.txt.gz" % (n,f,g,s,p,v,q,a,t,e,i)
                                         command = "./simple_test  -n %d -f %d -g %d -s %f -p %f -v %f -q %f -a %d -t %f -e %d"  % (n,f,g,s,p,v,q,a,t,e)
