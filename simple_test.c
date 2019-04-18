@@ -21,7 +21,7 @@ int main (int argc, char **argv){
 "-a         Number of tries carnivore has to eat (default = 2)\n"
 "-t         Probability of carnivore-herbivore transition (default=0)\n"
 "-g         Number of generations (default = 5)\n"
-"-h         Random seed unsigned integer (default = 0)\n"
+"-e         Random seed unsigned integer (default = 0)\n"
 "-h         Print this help text\n";
     /*int index;*/
     char *n_txt;

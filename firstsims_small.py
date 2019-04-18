@@ -10,12 +10,12 @@ print "	touch $@"
 names = []
 for n in [1000]:
     for f in [100000, 10000, 1000000]:
-        for g in [50]:
+        for g in [200]:
             for s in [.1]:
                 for p in [0.1]:
                     for v in [.1]:
-                        for q in [1, 1.4]:
-                            for a in [2, 4]:
+                        for q in [1.0, 1.2, 1.4, 2.0, 3.0]:
+                            for a in [2, 3, 4, 8, 16]:
                                 for t in [.01, .1]:
                                     for i in xrange(50):
                                         name = "datadir_small/sim_n%d_f%d_g%d_s%f_p%f_v%f_q%f_a%d_t%f_e%f_i%f.txt.gz" % (n,f,g,s,p,v,q,a,t,e,i)
