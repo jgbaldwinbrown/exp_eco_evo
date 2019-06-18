@@ -37,6 +37,7 @@ void prexp(full_exp *a);
 void prgen_table(generation *a, long long gen_number);
 void prexp_table(full_exp *a);
 void prexp_table_end(full_exp *a);
+void prexp_table_num(full_exp *a, long long gennum);
 void rinit_generation(generation *my_generation, double mean, double stdev, double carnivore_prob, gsl_rng *myrng);
 full_exp *init_full_exp(long long pop_size, long long generation_number);
 void rinit_full_exp(full_exp *my_experiment, double mean, double stdev, double carnivore_prob, gsl_rng *myrng);

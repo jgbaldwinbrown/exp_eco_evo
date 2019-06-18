@@ -9,12 +9,12 @@ print "	touch $@"
 
 names = []
 for n in [1000]:
-    for f in [100000, 10000, 1000000]:
+    for f in [10000]:
         for g in [200]:
             for s in [.1]:
                 for p in [0.1]:
                     for v in [.1]:
-                        for q in [1.0, 1.2, 1.4, 2.0, 3.0]:
+                        for q in [1.0, 1.1, 1.2, 1.4]:
                             for a in [2, 3, 4, 8, 16]:
                                 for t in [.01, .1]:
                                     for i in xrange(50):
