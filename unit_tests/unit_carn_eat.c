@@ -1,7 +1,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "simulator.h"
+#include "../simulator.h"
 #include <gsl/gsl_randist.h>
 #include <gsl/gsl_rng.h>
 
