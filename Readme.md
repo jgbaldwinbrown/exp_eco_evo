@@ -41,5 +41,12 @@ argument   description
 
 # Output
 
-Output is tabular, with one line per individual. The output lines correspond to the following traits:
+Output is tabular, with one line per individual. The output columns correspond to the following traits:
 
+1. Generation number.
+2. Individual number.
+3. Carnivory state of individual (0 = herbivore; 1 = carnivore).
+4. Individual size.
+5. Food needed for survival of this individual.
+6. Alive/dead state of individual (dead = 0; alive = 1).
+7. Food eaten by this individual.
